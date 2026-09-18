@@ -1,0 +1,342 @@
+{# Jinja2 Template - IDE linters may show false errors for template syntax #}
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Wafer Fault Detection{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-chart-line"></i> Analysis Dashboard</h2>
+            <p class="text-muted">Overview of recent wafer fault detection analyses</p>
+        </div>
+    </div>
+    
+    {% if error %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+    {% endif %}
+    
+    {% if analyses %}
+    <!-- Summary Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-alt fa-2x mb-2"></i>
+                    <h4>{{ analyses|length }}</h4>
+                    <p class="mb-0">Total Analyses</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-microchip fa-2x mb-2"></i>
+                    <h4>{{ analyses|sum(attribute='total_wafers') }}</h4>
+                    <p class="mb-0">Total Wafers</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                    <h4>{{ analyses|sum(attribute='faulty_wafers') }}</h4>
+                    <p class="mb-0">Faulty Wafers</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-percentage fa-2x mb-2"></i>
+                    <h4>{{ "%.1f"|format((analyses|sum(attribute='faulty_wafers') / analyses|sum(attribute='total_wafers') * 100) if analyses|sum(attribute='total_wafers') > 0 else 0) }}%</h4>
+                    <p class="mb-0">Avg Fault Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Analyses Table -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-history"></i> Recent Analyses (Last 10)
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>File</th>
+                            <th>Total Wafers</th>
+                            <th>Faulty Wafers</th>
+                            <th>Fault Rate</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for analysis in analyses[:10] %}
+                        <tr>
+                            <td>
+                                <small>{{ analysis.timestamp[:8] }}<br>{{ analysis.timestamp[9:].replace('_', ':') }}</small>
+                            </td>
+                            <td>
+                                <i class="fas fa-file-csv text-primary"></i>
+                                <small>{{ analysis.filename.replace('results_', '').replace('.csv', '') }}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">{{ analysis.total_wafers }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{% if analysis.faulty_wafers > 0 %}warning{% else %}success{% endif %}">
+                                    {{ analysis.faulty_wafers }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="progress" style="height: 20px; min-width: 80px;">
+                                    <!-- Jinja2 template syntax for dynamic styling -->
+                                    <div class="progress-bar {% if analysis.fault_rate > 15 %}bg-danger{% elif analysis.fault_rate > 5 %}bg-warning{% else %}bg-success{% endif %}" 
+                                         role="progressbar" 
+                                         style="width: {{ analysis.fault_rate }}%;">
+                                        {{ "%.1f"|format(analysis.fault_rate) }}%
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if analysis.fault_rate > 15 %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-exclamation-triangle"></i> High Risk
+                                    </span>
+                                {% elif analysis.fault_rate > 5 %}
+                                    <span class="badge bg-warning">
+                                        <i class="fas fa-exclamation-circle"></i> Medium Risk
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i> Low Risk
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('download_file', filename=analysis.filename) }}" 
+                                   class="btn btn-sm btn-outline-primary" title="Download Results">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Info Message -->
+    <div class="alert alert-info mt-4">
+        <i class="fas fa-info-circle"></i> 
+        <strong>Charts display all {{ analyses|length }} analyses.</strong> 
+        {% set total_faults = analyses|sum(attribute='faulty_wafers') %}
+        {% if total_faults == 0 %}
+            All recent wafers passed inspection (0% fault rate). Upload wafers with faults to see chart data.
+        {% else %}
+            Showing historical trend including {{ total_faults }} faulty wafers detected.
+        {% endif %}
+    </div>
+    
+    <!-- Trend Analysis -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-bar"></i> Fault Rate Distribution
+                    </h6>
+                </div>
+                <div class="card-body" style="height: 300px;">
+                    <canvas id="faultRateChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-line"></i> Analysis Timeline
+                    </h6>
+                </div>
+                <div class="card-body" style="height: 300px;">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <!-- No Data State -->
+    <div class="text-center py-5">
+        <i class="fas fa-chart-line fa-5x text-muted mb-4"></i>
+        <h4>No Analysis Data Available</h4>
+        <p class="text-muted mb-4">Upload and analyze wafer data to see dashboard insights</p>
+        <a href="{{ url_for('upload_page') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-upload"></i> Start First Analysis
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if analyses %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- eslint-disable -->
+<script>
+// Fault Rate Distribution Chart
+const faultRateCtx = document.getElementById('faultRateChart').getContext('2d');
+const analysesData = {{ analyses|tojson }};
+
+// Reverse data for chronological order (oldest to newest)
+const reversedData = analysesData.slice().reverse();
+const faultRates = reversedData.map(a => a.fault_rate);
+const labels = reversedData.map(a => a.timestamp);
+
+// Calculate max value safely
+const maxFaultRate = faultRates.length > 0 ? Math.max(...faultRates) : 10;
+
+new Chart(faultRateCtx, {
+    type: 'bar',
+    data: {
+        labels: labels.map(l => l.substr(0, 8)),
+        datasets: [{
+            label: 'Fault Rate (%)',
+            data: faultRates,
+            backgroundColor: faultRates.map(rate => 
+                rate > 15 ? '#dc3545' : 
+                rate > 5 ? '#ffc107' : '#28a745'
+            ),
+            borderColor: '#fff',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return 'Fault Rate: ' + context.parsed.y.toFixed(2) + '%';
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: maxFaultRate + 5,
+                title: {
+                    display: true,
+                    text: 'Fault Rate (%)'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Analysis Date'
+                }
+            }
+        }
+    }
+});
+
+// Timeline Chart
+const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+const totalWafers = reversedData.map(a => a.total_wafers);
+const faultyWafers = reversedData.map(a => a.faulty_wafers);
+
+new Chart(timelineCtx, {
+    type: 'line',
+    data: {
+        labels: labels.map(l => l.substr(0, 8)),
+        datasets: [{
+            label: 'Total Wafers',
+            data: totalWafers,
+            borderColor: '#007bff',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true
+        }, {
+            label: 'Faulty Wafers',
+            data: faultyWafers,
+            borderColor: '#dc3545',
+            backgroundColor: 'rgba(220, 53, 69, 0.2)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+            mode: 'index',
+            intersect: false
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    usePointStyle: true,
+                    padding: 15
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        label += context.parsed.y;
+                        return label;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Wafers'
+                },
+                ticks: {
+                    precision: 0
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Analysis Date'
+                }
+            }
+        }
+    }
+});
+</script>
+<!-- eslint-enable -->
+{% endif %}
+{% endblock %}

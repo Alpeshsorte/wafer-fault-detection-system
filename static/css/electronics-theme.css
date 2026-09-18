@@ -1,0 +1,674 @@
+/* Electronics Theme - Advanced UI for Wafer Fault Detection System */
+
+:root {
+    /* Electronics Theme CSS - Light Professional Theme */
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8f9fa;
+    --accent-cyan: #0066cc;
+    --accent-green: #28a745;
+    --circuit-green: #17a2b8;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --card-bg: #ffffff;
+    --hover-bg: #f8f9fa;
+    --primary-blue: #0066cc;
+    --secondary-blue: #004499;
+    --warning-orange: #ff6600;
+    --danger-red: #dc3545;
+    --light-bg: #f8f9fa;
+    --surface-bg: #ffffff;
+    --text-muted: #6c757d;
+    --glow-blue: rgba(0, 102, 204, 0.1);
+    --glow-green: rgba(40, 167, 69, 0.1);
+    --circuit-green: #17a2b8;
+}
+
+/* Global Styles */
+body {
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--light-bg) 100%);
+    color: var(--text-primary);
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Circuit Board Background Pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--glow-blue) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, var(--glow-green) 0%, transparent 50%),
+        linear-gradient(90deg, transparent 49%, rgba(0, 102, 204, 0.02) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(0, 102, 204, 0.02) 50%, transparent 51%);
+    background-size: 200px 200px, 300px 300px, 50px 50px, 50px 50px;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+/* Navigation */
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--accent-cyan);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 204, 255, 0.2);
+}
+
+.navbar-brand {
+    color: var(--accent-cyan) !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px var(--glow-blue);
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-secondary) !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--accent-cyan) !important;
+    text-shadow: 0 0 8px var(--glow-blue);
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-cyan);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+    box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-green) 100%);
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="circuit" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10 0v20M0 10h20" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/><circle cx="10" cy="10" r="2" fill="rgba(0,204,255,0.3)"/></pattern></defs><rect width="100" height="100" fill="url(%23circuit)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-section .display-4 {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+    to { text-shadow: 0 0 30px rgba(0, 204, 255, 0.8), 0 0 40px rgba(0, 204, 255, 0.6); }
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 12px 40px rgba(0, 204, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: var(--accent-cyan);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-header {
+    background: rgba(0, 102, 204, 0.2) !important;
+    border-bottom: 1px solid var(--accent-cyan);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.card-body {
+    color: var(--text-secondary);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 204, 255, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #00aa55, var(--accent-green));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ff8800, var(--warning-orange));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #cc0044, var(--danger-red));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Status Badges */
+.badge {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5em 0.8em;
+    border-radius: 6px;
+}
+
+.badge.bg-success {
+    background: linear-gradient(135deg, #00aa55, var(--accent-green)) !important;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, #cc0044, var(--danger-red)) !important;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+}
+
+.badge.bg-warning {
+    background: linear-gradient(135deg, #ff8800, var(--warning-orange)) !important;
+    box-shadow: 0 0 10px rgba(255, 102, 0, 0.3);
+}
+
+.badge.bg-primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan)) !important;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+}
+
+/* Tables */
+.table {
+    color: var(--text-secondary);
+    background: transparent;
+}
+
+.table-dark {
+    background: rgba(26, 31, 46, 0.9);
+    color: var(--text-primary);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: rgba(0, 204, 255, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(0, 204, 255, 0.1);
+    color: var(--text-primary);
+}
+
+/* Progress Bars */
+.progress {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.progress-bar.bg-danger {
+    background: linear-gradient(135deg, var(--danger-red), #ff6666) !important;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+}
+
+.progress-bar.bg-success {
+    background: linear-gradient(135deg, var(--accent-green), #66ff99) !important;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* Form Controls */
+.form-control {
+    background: rgba(26, 31, 46, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: rgba(26, 31, 46, 0.9);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 0.2rem rgba(0, 204, 255, 0.25);
+    color: var(--text-primary);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Alerts */
+.alert {
+    border: none;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--accent-green);
+    border-left-color: var(--accent-green);
+}
+
+.alert-danger {
+    background: rgba(255, 51, 102, 0.1);
+    color: var(--danger-red);
+    border-left-color: var(--danger-red);
+}
+
+.alert-warning {
+    background: rgba(255, 102, 0, 0.1);
+    color: var(--warning-orange);
+    border-left-color: var(--warning-orange);
+}
+
+.alert-info {
+    background: rgba(0, 204, 255, 0.1);
+    color: var(--accent-cyan);
+    border-left-color: var(--accent-cyan);
+}
+
+/* Modal */
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(0, 102, 204, 0.1);
+}
+
+.modal-title {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    color: var(--text-secondary);
+}
+
+/* Footer */
+.footer {
+    background: rgba(10, 14, 26, 0.95) !important;
+    border-top: 2px solid var(--accent-cyan);
+    backdrop-filter: blur(10px);
+}
+
+/* Animations */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 204, 255, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(0, 204, 255, 0.8), 0 0 30px rgba(0, 204, 255, 0.6); }
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.online {
+    background: var(--accent-green);
+    box-shadow: 0 0 10px var(--accent-green);
+}
+
+.status-indicator.warning {
+    background: var(--warning-orange);
+    box-shadow: 0 0 10px var(--warning-orange);
+}
+
+.status-indicator.error {
+    background: var(--danger-red);
+    box-shadow: 0 0 10px var(--danger-red);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Sensor Category Colors */
+.sensor-temp { color: #ff6b6b; }
+.sensor-press { color: #4ecdc4; }
+.sensor-flow { color: #45b7d1; }
+.sensor-rf { color: #f9ca24; }
+.sensor-elec { color: #f0932b; }
+.sensor-opt { color: #eb4d4b; }
+.sensor-mech { color: #6c5ce7; }
+.sensor-chem { color: #a29bfe; }
+.sensor-vac { color: #fd79a8; }
+.sensor-misc { color: #00b894; }
+
+/* Loading Spinner */
+.spinner-border {
+    border-color: var(--accent-cyan);
+    border-right-color: transparent;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-green);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 40px 0;
+    }
+    
+    .hero-section .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Circuit Animation */
+@keyframes circuit-flow {
+    0% { stroke-dashoffset: 100; }
+    100% { stroke-dashoffset: 0; }
+}
+
+.circuit-line {
+    stroke: var(--circuit-green);
+    stroke-width: 2;
+    stroke-dasharray: 10, 5;
+    animation: circuit-flow 3s linear infinite;
+    opacity: 0.6;
+}
+
+/* Feature Cards */
+.feature-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.feature-icon-wrapper .status-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Action Cards */
+.action-card {
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.action-card .btn {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.action-card:hover .btn::before {
+    left: 100%;
+}
+
+.action-icon {
+    transition: all 0.3s ease;
+}
+
+.action-card:hover .action-icon {
+    transform: scale(1.1);
+}
+
+/* Spec Items */
+.spec-item {
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: rgba(0, 204, 255, 0.05);
+    border-left: 3px solid var(--accent-cyan);
+    transition: all 0.3s ease;
+}
+
+.spec-item:hover {
+    background: rgba(0, 204, 255, 0.1);
+    transform: translateX(5px);
+}
+
+/* Sensor Categories */
+.sensor-category {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+}
+
+.sensor-category:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(3px);
+}
+
+/* Text Gradient */
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Enhanced Badges */
+.badge.sensor-temp { 
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+}
+
+.badge.sensor-press { 
+    background: linear-gradient(135deg, #4ecdc4, #6ee0d7) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(78, 205, 196, 0.3);
+}
+
+.badge.sensor-flow { 
+    background: linear-gradient(135deg, #45b7d1, #67c5e0) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(69, 183, 209, 0.3);
+}
+
+.badge.sensor-rf { 
+    background: linear-gradient(135deg, #f9ca24, #f0d43a) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(249, 202, 36, 0.3);
+}
+
+.badge.sensor-elec { 
+    background: linear-gradient(135deg, #f0932b, #f5a623) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(240, 147, 43, 0.3);
+}
+
+.badge.sensor-opt { 
+    background: linear-gradient(135deg, #eb4d4b, #f66b6b) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(235, 77, 75, 0.3);
+}
+
+.badge.sensor-mech { 
+    background: linear-gradient(135deg, #6c5ce7, #8b7ce8) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(108, 92, 231, 0.3);
+}
+
+.badge.sensor-chem { 
+    background: linear-gradient(135deg, #a29bfe, #b8b2ff) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(162, 155, 254, 0.3);
+}
+
+.badge.sensor-vac { 
+    background: linear-gradient(135deg, #fd79a8, #ff9bb5) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(253, 121, 168, 0.3);
+}
+
+.badge.sensor-misc { 
+    background: linear-gradient(135deg, #00b894, #00d2a0) !important;
+    color: white !important;
+    box-shadow: 0 0 8px rgba(0, 184, 148, 0.3);
+}
+
+/* Enhanced Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Glitch Effect for Title */
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+.glitch-effect:hover {
+    animation: glitch 0.3s ease-in-out;
+}

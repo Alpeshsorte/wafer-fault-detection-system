@@ -1,0 +1,390 @@
+/* Light Professional Theme for Wafer Fault Detection System */
+
+:root {
+    /* Light Theme Colors */
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8f9fa;
+    --accent-blue: #0066cc;
+    --accent-green: #28a745;
+    --accent-orange: #fd7e14;
+    --accent-red: #dc3545;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+    --border-color: #dee2e6;
+    --card-bg: #ffffff;
+    --hover-bg: #f8f9fa;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+
+/* Global Styles */
+body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: var(--text-primary);
+    font-family: 'Roboto Mono', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+}
+
+/* Navigation */
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--accent-blue);
+    box-shadow: 0 2px 10px var(--shadow-light);
+}
+
+.navbar-brand {
+    color: var(--accent-blue) !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--accent-blue) !important;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-blue);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="circuit" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10 0v20M0 10h20" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.2)"/></pattern></defs><rect width="100" height="100" fill="url(%23circuit)"/></svg>');
+    opacity: 0.3;
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px var(--shadow-light);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px var(--shadow-medium);
+}
+
+.card-header {
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-blue), #004499);
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 102, 204, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--accent-green), #1e7e34);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--accent-orange), #e55a00);
+    border: none;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--accent-red), #c82333);
+    border: none;
+}
+
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+/* Status Indicators */
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.online {
+    background: var(--accent-green);
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+}
+
+.status-indicator.offline {
+    background: var(--accent-red);
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+}
+
+.status-indicator.warning {
+    background: var(--accent-orange);
+    box-shadow: 0 0 8px rgba(253, 126, 20, 0.5);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.badge.bg-primary {
+    background: var(--accent-blue) !important;
+}
+
+.badge.bg-success {
+    background: var(--accent-green) !important;
+}
+
+.badge.bg-warning {
+    background: var(--accent-orange) !important;
+}
+
+.badge.bg-danger {
+    background: var(--accent-red) !important;
+}
+
+/* Feature Cards */
+.feature-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.feature-icon-wrapper .status-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Action Cards */
+.action-card {
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.action-card .btn {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-icon {
+    transition: all 0.3s ease;
+}
+
+.action-card:hover .action-icon {
+    transform: scale(1.1);
+}
+
+/* Text Gradient */
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Pulse Glow Effect */
+.pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+    from { 
+        box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+    }
+    to { 
+        box-shadow: 0 0 20px rgba(0, 102, 204, 0.8), 0 0 30px rgba(0, 102, 204, 0.6);
+    }
+}
+
+/* Footer */
+.footer {
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    margin-top: 50px;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--accent-green);
+    border-left: 4px solid var(--accent-green);
+}
+
+.alert-warning {
+    background: rgba(253, 126, 20, 0.1);
+    color: var(--accent-orange);
+    border-left: 4px solid var(--accent-orange);
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--accent-red);
+    border-left: 4px solid var(--accent-red);
+}
+
+/* Tables */
+.table {
+    background: var(--card-bg);
+}
+
+.table th {
+    background: var(--secondary-bg);
+    border-color: var(--border-color);
+    font-weight: 600;
+}
+
+.table td {
+    border-color: var(--border-color);
+}
+
+/* Progress Bars */
+.progress {
+    background: var(--secondary-bg);
+    border-radius: 8px;
+}
+
+.progress-bar {
+    border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 40px 0;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .action-card {
+        height: 150px;
+    }
+}
+
+/* Sensor Category Badges */
+.sensor-temp { 
+    background: linear-gradient(135deg, #dc3545, #c82333) !important;
+    color: white !important;
+}
+
+.sensor-press { 
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+    color: white !important;
+}
+
+.sensor-flow { 
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+    color: white !important;
+}
+
+.sensor-rf { 
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+    color: white !important;
+}
+
+.sensor-elec { 
+    background: linear-gradient(135deg, #fd7e14, #e55a00) !important;
+    color: white !important;
+}
+
+.sensor-opt { 
+    background: linear-gradient(135deg, #e83e8c, #d91a72) !important;
+    color: white !important;
+}
+
+.sensor-mech { 
+    background: linear-gradient(135deg, #6f42c1, #59359a) !important;
+    color: white !important;
+}
+
+.sensor-chem { 
+    background: linear-gradient(135deg, #20c997, #1aa179) !important;
+    color: white !important;
+}
+
+.sensor-vac { 
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.sensor-misc { 
+    background: linear-gradient(135deg, #6c757d, #545b62) !important;
+    color: white !important;
+}
